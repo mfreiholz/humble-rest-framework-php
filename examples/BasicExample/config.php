@@ -18,19 +18,14 @@ return array(
   
   // Register and configure web modules.
   "modules" => array(
-     
-    "ListModulesWebModule" => array(
-      "class_name" => "ListModulesWebModule",
-      "description" => "Shows a list of all existing modules.",
+
+    "HelloWorldWebModule" => array(
+      "class_name" => "HelloWorldWebModule",
+      "description" => "Says 'Hello World' to you.",
       "author" => "Manuel Freiholz",
-    ),
+     ),
 
   ),
-  
-  // IN - DEVELOPMENT - IDEAS
-  
-  // Request/Response filter. (Not implemented yet!)
-  "filter" => array(
-  ),
+
 );
 ?>
