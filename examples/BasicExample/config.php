@@ -24,6 +24,12 @@ return array(
       "description" => "Says 'Hello World' to you.",
       "author" => "Manuel Freiholz",
      ),
+     
+    "download" => array(
+      "class_name" => "DownloadWebModule",
+      "description" => "Starts a big download. Requires 64-bit system to download files bigger than 2 GB.",
+      "author" => "Manuel Freiholz",
+     ),
 
   ),
 

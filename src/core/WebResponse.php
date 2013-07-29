@@ -20,6 +20,11 @@ class WebResponse {
       $this->setHeader("Encoding", $encoding);
     }
   }
+  
+  public function write($data) {
+    $this->writeHeadersOnce();
+    print($data);
+  }
 
   public function done($data) {
     $this->writeHeadersOnce();
