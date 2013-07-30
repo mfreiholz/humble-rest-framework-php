@@ -29,6 +29,12 @@ return array(
       "class_name" => "DownloadWebModule",
       "description" => "Starts a big download. Requires 64-bit system to download files bigger than 2 GB.",
       "author" => "Manuel Freiholz",
+      
+      // Maximum transfer rate (bytes per second; 0=no limit).
+      "max_bytes_per_second" => 1024 * 50,  // 50 KB/s
+      
+      // File to download.
+      "file_path" => "D:\\Downloads\\qt-windows-opensource-5.1.0-msvc2012_opengl-x86_64-offline.exe",
      ),
 
   ),

@@ -26,8 +26,10 @@ class WebResponse {
     print($data);
   }
 
-  public function done($data) {
+  public function done($data = null) {
     $this->writeHeadersOnce();
+    if ($data === null)
+      return;
     print($data);
   }
   

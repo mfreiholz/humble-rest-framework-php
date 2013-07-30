@@ -32,7 +32,6 @@ class Engine {
     }
 
     // Process the web request.
-    $module->initialize($this);
     $module->processRequest($request, $response);
   }
 
@@ -40,7 +39,7 @@ class Engine {
     // Try to find module based on request parameter.
     $module_id = $request->getParameter($this->_config["engine"]["module_parameter"]);
 
-    // Try to find module based on request path-info (always overwrites the value from paramter).
+    // Try to find module based on request path-info (always overwrites the value from parameter).
     if (preg_match('/^\/([^\/]+)/', $request->getPathInfo(), $matches)) {
       $module_id = $matches[1];
     }
@@ -56,6 +55,7 @@ class Engine {
 
     $module_class_name = $modules[$module_id]["class_name"];
     $obj = new $module_class_name;
+    $obj->initialize($this, $modules[$module_id]);
     return $obj;
   }
 
