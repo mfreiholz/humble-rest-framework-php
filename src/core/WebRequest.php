@@ -25,6 +25,31 @@ class WebRequest {
     }
     return $defaultValue;
   }
+
+  public function getServerHost() {
+    if (isset($_SERVER["SERVER_ADDR"])) {
+      return $_SERVER["SERVER_ADDR"];
+    } else if (isset($_SERVER["SERVER_NAME"])) {
+      return $_SERVER["SERVER_NAME"];
+    }
+    return "";
+  }
+
+  public function getServerPort() {
+    if (isset($_SERVER["SERVER_PORT"])) {
+      return $_SERVER["SERVER_PORT"];
+    }
+    return 0;
+  }
+
+  public function getRemoteAddr() {
+    if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+      return $_SERVER["HTTP_X_FORWARDED_FOR"];
+    } else if (isset($_SERVER["REMOTE_ADDR"])) {
+      return $_SERVER["REMOTE_ADDR"];
+    }
+    return "";
+  }
   
   /*
     Gets the part of the URL, which comes right after the current executed script name.

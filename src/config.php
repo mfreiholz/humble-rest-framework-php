@@ -21,16 +21,14 @@ return array(
      
     "ListModulesWebModule" => array(
       "class_name" => "ListModulesWebModule",
-      "description" => "Shows a list of all existing modules.",
+      "description" => "Response a list of all existing modules in JSON format.",
       "author" => "Manuel Freiholz",
+      "prefixes" => array(
+        "/modules/list"
+      ),
     ),
 
-  ),
-  
-  // IN - DEVELOPMENT - IDEAS
-  
-  // Request/Response filter. (Not implemented yet!)
-  "filter" => array(
-  ),
+  )
+
 );
 ?>

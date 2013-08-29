@@ -2,8 +2,28 @@
 class Engine {
   private $_config;
 
-  public function __construct($config) {
+  /*
+    Holds association between module's prefix list and the module's ID.
+    e.g.: array("/service/search" => "SearchServiceModule", "/home" => "HomeModule")
+  */
+  private $_prefix_to_module_map = array();
+
+  public function __construct(array $config = array()) {
     $this->_config = $config;
+
+    // Register module prefix paths.
+    if (isset($this->_config["modules"])) {
+      foreach ($this->_config["modules"] as $module_id => $val) {
+        if (!isset($val["prefixes"]))
+          continue;
+        foreach ($val["prefixes"] as $prefix) {
+          if (empty($prefix)) continue;
+          $this->_prefix_to_module_map[$prefix] = $module_id;
+        }
+      }
+    }
+
+    // Register auto module class loader.
     spl_autoload_register(__NAMESPACE__ ."\Engine::moduleAutoLoad");
   }
 
@@ -16,11 +36,13 @@ class Engine {
     $request = new WebRequest;
     $response = new WebResponse;
 
-    $ec = &$this->_config["engine"];
-    if (isset($ec["default_encoding"]))
-      $response->setEncoding($ec["default_encoding"]);
-    if (isset($ec["default_content_type"]))
-      $response->setContentType($ec["default_content_type"]);
+    if (isset($this->_config["engine"])) {
+      $ec = $this->_config["engine"];
+      if (isset($ec["default_encoding"]))
+        $response->setEncoding($ec["default_encoding"]);
+      if (isset($ec["default_content_type"]))
+        $response->setContentType($ec["default_content_type"]);
+    }
 
     // ROUTING
     // Find module for current request.
@@ -36,11 +58,28 @@ class Engine {
   }
 
   private function findModule(WebRequest $request) {
+    if (!isset($this->_config["modules"]))
+      return null;
+
+    $module_id = "";
+
     // Try to find module based on request parameter.
-    $module_id = $request->getParameter($this->_config["engine"]["module_parameter"]);
+    if (empty($module_id) && isset($this->_config["engine"]["module_parameter"])) {
+      $module_id = $request->getParameter($this->_config["engine"]["module_parameter"]);
+    }
+
+    // Try to find module by it's prefix path.
+    if (empty($module_id)) {
+      foreach ($this->_prefix_to_module_map as $prefix => $mid) {
+        if (strpos($request->getPathInfo(), $prefix) === 0) {
+          $module_id = $mid;
+          break;
+        }
+      }
+    }
 
     // Try to find module based on request path-info (always overwrites the value from parameter).
-    if (preg_match('/^\/([^\/]+)/', $request->getPathInfo(), $matches)) {
+    if (empty($module_id) && preg_match('/^\/([^\/]+)/', $request->getPathInfo(), $matches)) {
       $module_id = $matches[1];
     }
 
