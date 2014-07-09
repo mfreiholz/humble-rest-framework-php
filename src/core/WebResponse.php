@@ -14,16 +14,21 @@ class WebResponse {
       $this->setHeader("Content-Type", $contentType);
     }
   }
-  
+
   public function setEncoding($encoding = "UTF-8") {
     if (!empty($encoding)) {
       $this->setHeader("Encoding", $encoding);
     }
   }
-  
+
   public function write($data) {
     $this->writeHeadersOnce();
     print($data);
+  }
+
+  public function write2json($obj) {
+    $this->setContentType("application/json");
+    $this->write(json_encode($obj));
   }
 
   public function done($data = null) {
@@ -32,11 +37,12 @@ class WebResponse {
       return;
     print($data);
   }
-  
+
   public function done2json($obj) {
+    $this->setContentType("application/json");
     $this->done(json_encode($obj));
   }
-  
+
   public function fail($statusCode, $statusMessage = null) {
     if (empty($statusMessage)) {
       header("HTTP/1.1 " . $statusCode);
@@ -44,13 +50,12 @@ class WebResponse {
       header("HTTP/1.1 " . $statusCode . " " . $statusMessage);
     }
     $this->writeHeadersOnce();
-    print(json_encode(array("message" => "Invalid request")));
   }
-  
+
   public function redirect($uri) {
     header("Location: " . $uri);
   }
-  
+
   private function writeHeadersOnce() {
     if (!$this->_headers_written) {
       $this->_headers_written = true;

@@ -53,8 +53,16 @@ class Engine {
       return;
     }
 
-    // Process the web request.
-    $module->processRequest($request, $response);
+    // Module execution.
+    if (!$module->beforeProcessRequest($request, $response)) {
+      return;
+    }
+    if (!$module->processRequest($request, $response)) {
+      return;
+    }
+    if (!$module->afterProcessRequest($request, $response)) {
+      return;
+    }
   }
 
   private function findModule(WebRequest $request) {

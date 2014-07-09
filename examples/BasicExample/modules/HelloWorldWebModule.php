@@ -1,5 +1,10 @@
 <?php
 class HelloWorldWebModule extends WebModule {
+
+  public function beforeProcessRequest(WebRequest $request, WebResponse $response) {
+    return true;
+  }
+
   public function processRequest(WebRequest $request, WebResponse $response) {
     $buff = "<!DOCTYPE html>\n";
     $buff.= "<html><head><meta charset=\"UTF-8\"><title>Hello World Example</title></head><body>";
@@ -9,5 +14,6 @@ class HelloWorldWebModule extends WebModule {
     $response->setContentType("text/html");
     $response->done($buff);
   }
+
 }
 ?>
