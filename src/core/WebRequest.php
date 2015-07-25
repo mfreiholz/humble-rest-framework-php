@@ -51,6 +51,10 @@ class WebRequest {
     return "";
   }
   
+  public function getRequestMethod() {
+    return $_SERVER["REQUEST_METHOD"];
+  }
+  
   /*
     Gets the part of the URL, which comes right after the current executed script name.
     e.g.: http://localhost/index.php/MyWebModule/MoreData?foo=bar
@@ -80,7 +84,7 @@ class WebRequest {
   }
   
   public function getRequestBody() {
-    return file_get_contents('php://input');
+    return file_get_contents("php://input");
   }
 
 }
