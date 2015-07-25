@@ -19,7 +19,7 @@ class WebRequest {
     return isset($_COOKIE[$name]);
   }
   
-  public function getCookie($name, $defaultValue) {
+  public function getCookie($name, $defaultValue = null) {
     if (isset($_COOKIE[$name])) {
       return $_COOKIE[$name];
     }
@@ -78,5 +78,10 @@ class WebRequest {
     }
     return "";
   }
+  
+  public function getRequestBody() {
+    return file_get_contents('php://input');
+  }
+
 }
 ?>
